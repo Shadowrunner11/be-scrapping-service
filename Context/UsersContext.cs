@@ -12,10 +12,10 @@ public class UsersContext : IdentityUserContext<User>
     public UsersContext (DbContextOptions<UsersContext> options, IConfiguration configuration)
         : base(options)
     {
-            this._configuration = configuration;
+        this._configuration = configuration;
     }
 
-     public DbSet<History> Histories { get; set; }
+    public DbSet<History> Histories { get; set; }
 
         
     protected override void OnConfiguring(DbContextOptionsBuilder options)
