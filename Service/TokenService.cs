@@ -28,8 +28,8 @@ namespace be_scrapping_service.Service
         private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials,
             DateTime expiration) =>
             new(
-                "apiWithAuthBackend",
-                "apiWithAuthBackend",
+                "be_scrapping_service",
+                "be_scrapping_service",
                 claims,
                 expires: expiration,
                 signingCredentials: credentials
@@ -65,7 +65,7 @@ namespace be_scrapping_service.Service
         {
             return new SigningCredentials(
                 new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("!SomethingSecret!")
+                    Encoding.UTF8.GetBytes("a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11")
                 ),
                 SecurityAlgorithms.HmacSha256
             );

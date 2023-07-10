@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using be_scrapping_service.Entity;
 namespace be_scrapping_service.Context;
 
-public class UsersContext : IdentityUserContext<IdentityUser>
+public class UsersContext : IdentityUserContext<User>
 {
     private readonly IConfiguration _configuration;
 
