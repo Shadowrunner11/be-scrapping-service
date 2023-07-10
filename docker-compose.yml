@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    user: root
+    image: mcr.microsoft.com/mssql/server
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+      - MSSQL_SA_PASSWORD=admin123A
+      - MSSQL_PID=Express
+      - ACCEPT_EULA=Y
+    volumes:
+      - /home/piero/brive/sqlserver/data:/var/opt/mssql/data
