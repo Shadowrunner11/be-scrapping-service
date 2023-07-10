@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using be_scrapping_service.Context;
 
@@ -11,9 +12,11 @@ using be_scrapping_service.Context;
 namespace be_scrapping_service.Migrations
 {
     [DbContext(typeof(UsersContext))]
-    partial class UsersContextModelSnapshot : ModelSnapshot
+    [Migration("20230710185237_fourthMigration")]
+    partial class fourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,13 +109,7 @@ namespace be_scrapping_service.Migrations
                     b.Property<int>("JobsCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("HistoryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Histories");
                 });
@@ -215,22 +212,6 @@ namespace be_scrapping_service.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("be_scrapping_service.Entity.History", b =>
-                {
-                    b.HasOne("be_scrapping_service.Entity.User", "User")
-                        .WithMany("Histories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("be_scrapping_service.Entity.User", b =>
-                {
-                    b.Navigation("Histories");
                 });
 #pragma warning restore 612, 618
         }
