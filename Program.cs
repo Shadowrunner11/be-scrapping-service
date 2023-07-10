@@ -31,10 +31,13 @@ builder.Services
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters()
-        {
+        {   
+            // TODO: checj valid issuer and audience
+            RoleClaimType = "roles",
+            NameClaimType = "name",
             ClockSkew = TimeSpan.Zero,
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = "https://localhost:*",

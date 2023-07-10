@@ -7,6 +7,8 @@ namespace be_scrapping_service.Entity
   {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
+
+    public ICollection<History>? Histories { get; set; }
   }
 }
  

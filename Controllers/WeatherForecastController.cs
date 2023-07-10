@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
+using be_scrapping_service.Context;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using be_scrapping_service.Entity;
 namespace be_scrapping_service.Controllers;
+
 
 [ApiController]
 [Route("[controller]")]
@@ -12,10 +17,19 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly UsersContext _context;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    private readonly UserManager<User> _userManager;
+
+    public WeatherForecastController(
+        ILogger<WeatherForecastController> logger, 
+        UsersContext context,
+        UserManager<User> userManager
+    )
     {
         _logger = logger;
+        _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -30,11 +44,36 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
-    [HttpGet]
-    [Route("test")]
-    async public Task<List<OCCItem>> GetTest(){
-        var results = await new ScrappingService("https://www.occ.com.mx").ParseHtml();
+    [HttpPost, Authorize]
+    [Route("scrap")]
+    async public Task<object> PostHistory(string companyName){
+        var results = await new ScrappingService("https://www.occ.com.mx")
+            .ParseHtml(companyName);
+     
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        _context.Histories.Add(new Entity.History{
+            JobsCount = results,
+            UserId = userId,
+            CompanyName = companyName
+        });
 
-        return results;
+        _context.SaveChanges();
+
+        return new{
+            JobsCount = results,
+            CompanyName = companyName
+        };
+    }
+
+    [HttpGet, Authorize]
+    [Route("history")]
+    public List<Entity.History> GetHistory(int page)
+    {
+        return _context.Histories
+            .Where(history => history.UserId.Equals(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            .Skip(page*10)
+            .Take(10)
+            .ToList();
     }
 }
