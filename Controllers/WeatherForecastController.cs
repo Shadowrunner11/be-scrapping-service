@@ -29,4 +29,12 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpGet]
+    [Route("test")]
+    async public Task<List<OCCItem>> GetTest(){
+        var results = await new ScrappingService("https://www.occ.com.mx").ParseHtml();
+
+        return results;
+    }
 }
