@@ -8,15 +8,18 @@ public class UsersContext : IdentityUserContext<User>
 {
     private readonly IConfiguration _configuration;
 
+  
     public UsersContext (DbContextOptions<UsersContext> options, IConfiguration configuration)
         : base(options)
     {
             this._configuration = configuration;
     }
+
+     public DbSet<History> Histories { get; set; }
+
         
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        // It would be a good idea to move the connection string to user secrets
         options.UseSqlServer(this._configuration.GetConnectionString("SqlConnection"));
     }
     

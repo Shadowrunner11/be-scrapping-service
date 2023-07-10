@@ -1,4 +1,3 @@
-using be_scrapping_service;
 using HtmlAgilityPack;
 using System.Net;
 
@@ -37,32 +36,18 @@ class ScrappingService
 
   }
 
-  async public Task<List<OCCItem>> ParseHtml()
+  async public Task<int> ParseHtml(string companyName)
   {
     HtmlDocument htmlDoc = new HtmlDocument();
+
+    string html = await this.callUrl("/empleos" + "/de-" + companyName);
    
-    htmlDoc.LoadHtml(await this.callUrl("/empleos"));
+    htmlDoc.LoadHtml(html);
 
-    var programmerLinks = htmlDoc.DocumentNode.SelectNodes(".//div[contains(@id,\"jobcard\")]");
-
-    List<OCCItem> items = new List<OCCItem>();
-    
-    foreach (HtmlNode element in programmerLinks)
-    {    
-      OCCItem item = new OCCItem();
-
-      item.CompanyName = this.getInnerText(element, "//span[contains(@class,\"locContainer\")]");
-
-      item.JobsCount = this.parseJobsCount(
-        this.getInnerText(element, "//div[contains(@class,\"leftSide\")]/p")
+    return this.parseJobsCount(
+        this.getInnerText(htmlDoc.DocumentNode, "//div[contains(@class,\"leftSide\")]/p")
       );
 
-      item.CreatedAt = DateTime.UtcNow;
-
-      items.Add(item);
-    }
-
-    return items;
   }
 }
 
