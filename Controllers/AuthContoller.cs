@@ -3,19 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 
 using be_scrapping_service.Context;
 using be_scrapping_service.Service;
-
-
+using be_scrapping_service.Entity;
 namespace be_scrapping_service.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly UsersContext _context;
     private readonly TokenService _tokenService;
 
-    public AuthController(UserManager<IdentityUser> userManager, UsersContext context, TokenService tokenService)
+    public AuthController(UserManager<User> userManager, UsersContext context, TokenService tokenService)
     {
         _userManager = userManager;
         _context = context;
@@ -32,14 +31,22 @@ public class AuthController : ControllerBase
         }
 
         var result = await _userManager.CreateAsync(
-            new IdentityUser { UserName = request.Username, Email = request.Email},
+            new User
+             { 
+                UserName = request.Username, 
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName
+            },
             request.Password
         );
 
         if (result.Succeeded)
         {
             request.Password = "";
-            return CreatedAtAction(nameof(Register), new {email = request.Email}, request);
+            return CreatedAtAction(nameof(Register), new {
+                email = request.Email
+            }, request);
         }
         
         foreach (var error in result.Errors) { 

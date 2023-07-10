@@ -1,11 +1,12 @@
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.IdentityModel.Tokens;
 
 using be_scrapping_service.Context;
 using be_scrapping_service.Service;
+using be_scrapping_service.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+var secret =  Encoding.UTF8.GetBytes(
+    "a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11a5e5a0e4bc817ef2774d841c0d300847b3212d96a49a3fe849ecf65d51dadb11"
+);
+Console.WriteLine(secret.Length);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,18 +37,16 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "apiWithAuthBackend",
-            ValidAudience = "apiWithAuthBackend",
+            ValidIssuer = "https://localhost:*",
+            ValidAudience = "be_scrapping_service",
             // TODO: read this from enviroments
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("!SomethingSecret!")
-            ),
+            IssuerSigningKey = new SymmetricSecurityKey(secret),
         };
     });
     
 
 builder.Services
-    .AddIdentityCore<IdentityUser>(options =>
+    .AddIdentityCore<User>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
         options.User.RequireUniqueEmail = true;
