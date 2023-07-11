@@ -11,7 +11,7 @@ using be_scrapping_service.Context;
 
 namespace be_scrapping_service.Migrations
 {
-    [DbContext(typeof(UsersContext))]
+    [DbContext(typeof(ScrapingContext))]
     [Migration("20230710211601_sixthMigration")]
     partial class sixthMigration
     {

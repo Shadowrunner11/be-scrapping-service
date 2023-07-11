@@ -10,7 +10,7 @@ using be_scrapping_service.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<UsersContext>();
+builder.Services.AddDbContext<ScrapingContext>();
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService, TokenService>();
@@ -59,7 +59,7 @@ builder.Services
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
     })
-    .AddEntityFrameworkStores<UsersContext>();
+    .AddEntityFrameworkStores<ScrapingContext>();
 
 var app = builder.Build();
 
