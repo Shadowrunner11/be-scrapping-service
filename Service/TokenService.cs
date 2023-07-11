@@ -13,9 +13,9 @@ namespace be_scrapping_service.Service
     public string CreateToken(IdentityUser user)
     {
       var token = CreateJwtToken(
-          CreateClaims(user),
-          CreateSigningCredentials(),
-          DateTime.UtcNow.AddMinutes(ExpirationMinutes)
+        CreateClaims(user),
+        CreateSigningCredentials(),
+        DateTime.UtcNow.AddMinutes(ExpirationMinutes)
       );
 
       return new JwtSecurityTokenHandler().WriteToken(token);
