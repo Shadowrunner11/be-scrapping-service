@@ -40,13 +40,18 @@ class ScrappingService
   {
     HtmlDocument htmlDoc = new HtmlDocument();
 
-    string html = await this.callUrl("/empleos" + "/de-" + companyName);
+    string html = await this
+      .callUrl(
+        "/empleos" + 
+        "/de-" + 
+        companyName.Trim().Replace(" ","-")
+      );
    
     htmlDoc.LoadHtml(html);
 
     return this.parseJobsCount(
-        this.getInnerText(htmlDoc.DocumentNode, "//div[contains(@class,\"leftSide\")]/p")
-      );
+      this.getInnerText(htmlDoc.DocumentNode, "//div[contains(@class,\"leftSide\")]/p")
+    );
 
   }
 }
