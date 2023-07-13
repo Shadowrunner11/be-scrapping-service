@@ -10,7 +10,7 @@ using be_scrapping_service.Context;
 
 namespace be_scrapping_service.Migrations
 {
-    [DbContext(typeof(UsersContext))]
+    [DbContext(typeof(ScrapingContext))]
     partial class UsersContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
