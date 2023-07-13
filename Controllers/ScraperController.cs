@@ -54,6 +54,7 @@ public class ScraperController : ControllerBase
         .Count()
     },
     results = _context.Histories
+      .OrderByDescending(history => history.UserId)
       .Where(history => history.UserId.Equals(User.FindFirst(ClaimTypes.NameIdentifier).Value))
       .Skip(page * 10)
       .Take(10)
