@@ -12,13 +12,13 @@ class ScrappingService
 
   private async Task<string> callUrl(string url)
   {
-        HttpClient client = new HttpClient();
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
-        client.DefaultRequestHeaders.Accept.Clear();
+    HttpClient client = new HttpClient();
+    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
+    client.DefaultRequestHeaders.Accept.Clear();
 
-        // TODO: use Uri API
-        var response = client.GetStringAsync(this._baseUrl + url);
-        return await response;
+    // TODO: use Uri API
+    var response = client.GetStringAsync(this._baseUrl + url);
+    return await response;
   }
 
   private string getInnerText(HtmlNode node, string xpath){

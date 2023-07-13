@@ -10,10 +10,24 @@ using be_scrapping_service.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<UsersContext>();
+builder.Services.AddDbContext<ScrapingContext>();
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService, TokenService>();
+
+builder.Services.AddCors(op=>
+{
+    op.AddPolicy(
+        name: "*",
+        policy => 
+        {
+            policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        }
+    );
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -59,7 +73,8 @@ builder.Services
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
     })
-    .AddEntityFrameworkStores<UsersContext>();
+    .AddEntityFrameworkStores<ScrapingContext>();
+
 
 var app = builder.Build();
 
@@ -69,6 +84,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("*");
 
 app.UseHttpsRedirection();
 
