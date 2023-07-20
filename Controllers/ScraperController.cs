@@ -30,6 +30,9 @@ public class ScraperController : ControllerBase
     var results = await new ScrappingService("https://www.occ.com.mx")
       .ParseHtml(companyName);
 
+    if(results == 0)
+      return BadRequest("There is no data")
+
     _context.Histories.Add(new Entity.History
     {
       JobsCount = results,
@@ -54,7 +57,7 @@ public class ScraperController : ControllerBase
         .Count()
     },
     results = _context.Histories
-      .OrderByDescending(history => history.UserId)
+      .OrderByDescending(history => history.HistoryId)
       .Where(history => history.UserId.Equals(User.FindFirst(ClaimTypes.NameIdentifier).Value))
       .Skip(page * 10)
       .Take(10)
